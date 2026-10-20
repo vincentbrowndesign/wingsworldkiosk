@@ -1,0 +1,13 @@
+{
+  "name": "wings-world-kiosk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test",
+    "vapid": "node -e \"const k=require('web-push').generateVAPIDKeys();console.log('VAPID_PUBLIC_KEY='+k.publicKey+'\\nVAPID_PRIVATE_KEY='+k.privateKey)\""
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": { "web-push": "3.6.7" }
+}

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0B0B0B">
+  <title>Wings World</title>
+  <link rel="manifest" href="/kiosk.webmanifest">
+  <link rel="icon" href="/icons/icon.svg">
+  <link rel="stylesheet" href="/css/kiosk.css">
+</head>
+<body>
+  <main id="app" data-mode="setup">
+    <!-- First load on the tablet: needs one tap so sound, full screen and keep-awake are allowed. -->
+    <section class="screen" id="setup">
+      <div class="signature" data-brand-signature>Wings World</div>
+      <p class="lead" id="setup-status">Getting ready…</p>
+      <button class="button gold" id="start" disabled>Start kiosk</button>
+    </section>
+
+    <section class="screen" id="idle" aria-label="Welcome">
+      <div class="slides" id="slides"></div>
+      <div class="bar">
+        <div class="signature small" data-brand-signature>Wings World</div>
+        <button class="button gold" id="talk">Tap to talk to us</button>
+        <figure class="qr"><div data-menu-qr></div><figcaption>Scan for menu</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="screen" id="confirm" aria-label="Start a video call">
+      <h1>Talk to the Wings World team?</h1>
+      <p class="lead">We'll start a video call with someone in the restaurant.</p>
+      <div class="row">
+        <button class="button gold" id="call">Start video call</button>
+        <button class="button ghost" data-home>Not now</button>
+      </div>
+    </section>
+
+    <section class="screen" id="ringing" aria-label="Calling">
+      <video id="preview" autoplay playsinline muted></video>
+      <div class="overlay">
+        <h1>Calling Wings World…</h1>
+        <p class="lead" id="ring-status">Someone will be right with you.</p>
+        <button class="button ghost" id="cancel">Cancel</button>
+      </div>
+    </section>
+
+    <section class="screen" id="incall" aria-label="On a call">
+      <video id="remote" autoplay playsinline></video>
+      <video id="self" autoplay playsinline muted></video>
+      <div class="incall-bar">
+        <span id="incall-name">Wings World</span>
+        <button class="button end" id="hangup">End call</button>
+      </div>
+    </section>
+
+    <section class="screen" id="missed" aria-label="Missed call">
+      <h1>Sorry we missed you</h1>
+      <p class="lead" id="missed-text">Scan to text us and we'll get right back to you.</p>
+      <figure class="qr large"><div id="sms-qr"></div><figcaption>Scan to text us</figcaption></figure>
+      <button class="button ghost" data-home>Done</button>
+    </section>
+
+    <section class="screen" id="ended" aria-label="Call ended">
+      <h1 id="ended-title">Thanks for calling</h1>
+      <p class="lead" id="ended-text">Enjoy your wings.</p>
+    </section>
+
+    <section class="screen" id="closed" aria-label="Closed">
+      <div class="player" id="player"></div>
+      <div class="closed-bar">
+        <div class="signature small" data-brand-signature>Wings World</div>
+        <div>
+          <strong id="closed-message">We're closed right now</strong>
+          <span id="closed-hours"></span>
+        </div>
+        <figure class="qr"><div data-menu-qr></div><figcaption>Scan for menu</figcaption></figure>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/js/kiosk.mjs"></script>
+</body>
+</html>
