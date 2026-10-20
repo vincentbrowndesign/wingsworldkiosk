@@ -3,7 +3,7 @@
 Built 2026-10-20 for delivery 2026-10-21. Software works end to end in a local browser test (tablet → staff phone alert screen → answer → two-way video → hang up; cancel; missed → text QR; closed → YouTube). Not yet deployed; not yet tested on the real TCL tablet or an iPhone.
 
 ## Blocking go-live (need from owner / Vincent)
-- **Menu link**: `wingsworldfood.com` did not resolve in DNS on 2026-10-20. Confirm the real menu URL before printing/showing the QR.
+- **Menu link**: set to `https://www.wingsworldfood.com` (owner-supplied). Both it and the bare domain returned ENOTFOUND (no DNS) from the build environment on 2026-10-20; scan the QR on a phone to confirm it loads before go-live.
 - **Hosting decision**: Supabase org already has 2 active free projects (trophy-labs-staging, city2city); a new project likely needs a paid plan or pausing one. Vercel Hobby is non-commercial by its terms. Choose: new paid Supabase project / pause one / other backend.
 - **Repository**: create `vincentbrowndesign/wings-world-kiosk` (private) and push this checkout.
 - **Secrets** in Vercel: see `.env.example` (generate VAPID with `npm run vapid`).

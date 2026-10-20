@@ -5,7 +5,7 @@
     "logo": "",
     "colors": { "background": "#0B0B0B", "text": "#FFFFFF", "gold": "#C9A227" }
   },
-  "menuUrl": "https://wingsworldfood.com",
+  "menuUrl": "https://www.wingsworldfood.com",
   "timeZone": "America/Chicago",
   "hours": {
     "default": { "open": "11:00", "close": "21:00" },
