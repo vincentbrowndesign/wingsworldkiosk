@@ -70,3 +70,4 @@ video { background: #000; }
   .bar, .closed-bar { flex-wrap: wrap; justify-content: center; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) { .slide { transition: none; } }
+.closed-art { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 40%, #2a2210 0%, var(--bg) 70%); }

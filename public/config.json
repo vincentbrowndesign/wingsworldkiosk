@@ -3,12 +3,19 @@
     "name": "Wings World",
     "signature": "Wings World",
     "logo": "",
-    "colors": { "background": "#0B0B0B", "text": "#FFFFFF", "gold": "#C9A227" }
+    "colors": {
+      "background": "#0B0B0B",
+      "text": "#FFFFFF",
+      "gold": "#C9A227"
+    }
   },
   "menuUrl": "https://www.wingsworldfood.com",
   "timeZone": "America/Chicago",
   "hours": {
-    "default": { "open": "11:00", "close": "21:00" },
+    "default": {
+      "open": "11:00",
+      "close": "21:00"
+    },
     "days": {}
   },
   "closed": {
@@ -20,9 +27,22 @@
     "textMessage": "Hi Wings World, I tried calling from the kiosk."
   },
   "slides": [
-    { "headline": "Fresh wings, made to order", "body": "Scan the code to see the full menu.", "image": "" },
-    { "headline": "Questions? Talk to us live", "body": "Tap the screen to video call the Wings World team.", "image": "" },
-    { "headline": "Today's special", "body": "Ask us about today's deal.", "image": "" }
+    {
+      "headline": "Fresh wings, made to order",
+      "body": "Scan the code to see the full menu.",
+      "image": ""
+    },
+    {
+      "headline": "Questions? Talk to us live",
+      "body": "Tap the screen to video call the Wings World team.",
+      "image": "",
+      "needsCalls": true
+    },
+    {
+      "headline": "Today's special",
+      "body": "Ask us about today's deal.",
+      "image": ""
+    }
   ],
   "slideSeconds": 8,
   "ringSeconds": 45,

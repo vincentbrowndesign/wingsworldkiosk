@@ -1,5 +1,5 @@
 import qrcode from './vendor-qrcode.mjs';
-import { isOpen, hoursLabel, youtubeEmbed, smsLink, callId as newCallId } from './logic.mjs';
+import { isOpen, hoursLabel, formatClock, youtubeEmbed, smsLink, callId as newCallId } from './logic.mjs';
 import { openChannel, getMedia, createPeer, stopStream, postJson } from './call.mjs';
 
 const $ = (id) => document.getElementById(id);
@@ -56,7 +56,9 @@ function renderBrand() {
 }
 
 function renderSlides() {
+  // Slides about calling only show once calls are working.
   $('slides').innerHTML = state.config.slides
+    .filter((s) => !s.needsCalls || state.session)
     .map(
       (s, i) => `<article class="slide${i === 0 ? ' active' : ''}"${s.image ? ` style="background-image:url('${s.image}')"` : ''}>
         <div class="slide-copy"><h1>${s.headline}</h1><p class="lead">${s.body}</p></div></article>`,
@@ -75,8 +77,11 @@ function nextSlide() {
 function setPlayer(on) {
   const player = $('player');
   const src = youtubeEmbed(state.config.closed.youtube);
-  if (on && src && !player.firstChild) {
-    player.innerHTML = `<iframe src="${src}" allow="autoplay; encrypted-media" title="Wings World TV"></iframe>`;
+  if (on && !player.firstChild) {
+    const opens = state.config.hours.default?.open;
+    player.innerHTML = src
+      ? `<iframe src="${src}" allow="autoplay; encrypted-media" title="Wings World TV"></iframe>`
+      : `<div class="closed-art"><div class="signature">${state.config.brand.signature}</div><p class="lead">See you at ${formatClock(opens)}</p></div>`;
   } else if (!on) player.innerHTML = '';
 }
 
@@ -210,20 +215,20 @@ async function init() {
   state.config = await fetch('/config.json', { cache: 'no-store' }).then((r) => r.json());
   state.key = readKey();
   renderBrand();
-  renderSlides();
   try {
-    if (!state.key) throw new Error('No kiosk key. Open the setup link once.');
+    if (!state.key) throw new Error('not set up yet');
     state.session = await fetch(`/api/session?role=kiosk&key=${encodeURIComponent(state.key)}`).then(async (r) => {
       const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || 'Calls unavailable');
+      if (!r.ok) throw new Error(data.error || 'not set up yet');
       return data;
     });
     state.channel = await openChannel(state.session, onMessage);
     $('setup-status').textContent = 'Video calls are ready.';
   } catch (error) {
     state.session = null;
-    $('setup-status').textContent = `Calls are off: ${error.message}`;
+    $('setup-status').textContent = `Ready. Video calls: ${error.message}.`;
   }
+  renderSlides();
   $('start').disabled = false;
 }
 
