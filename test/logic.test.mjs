@@ -42,3 +42,13 @@ test('config has three slides and a menu link', () => {
   assert.equal(config.slides.length, 3);
   assert.match(config.menuUrl, /^https:\/\//);
 });
+
+test('pre-rendered QR codes match the config and decode to the same matrix', async () => {
+  const { encode } = await import('../scripts/build-qr.mjs');
+  const { qrSvg } = await import('../public/js/logic.mjs');
+  const qr = JSON.parse(readFileSync(new URL('../public/qr.json', import.meta.url)));
+  assert.deepEqual(qr.menu, encode(config.menuUrl), 'run npm run qr after editing config.json');
+  const svg = qrSvg(qr.menu);
+  const dark = qr.menu.hex.split('').reduce((n, h) => n + parseInt(h, 16).toString(2).split('1').length - 1, 0);
+  assert.equal(svg.split('h1v1').length - 1, dark);
+});

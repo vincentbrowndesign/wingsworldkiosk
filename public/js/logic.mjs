@@ -97,3 +97,14 @@ export function smsLink(number, body) {
 export function callId() {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
+
+// Draws a pre-rendered QR matrix (see scripts/build-qr.mjs) as an SVG.
+export function qrSvg({ size, hex }) {
+  const margin = 2;
+  const full = size + margin * 2;
+  let path = '';
+  for (let i = 0; i < size * size; i++) {
+    if ((parseInt(hex[i >> 2], 16) >> (3 - (i & 3))) & 1) path += `M${(i % size) + margin},${Math.floor(i / size) + margin}h1v1h-1z`;
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${full} ${full}" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="${path}" fill="#000"/></svg>`;
+}

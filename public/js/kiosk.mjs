@@ -1,5 +1,4 @@
-import qrcode from './vendor-qrcode.mjs';
-import { isOpen, hoursLabel, formatClock, youtubeEmbed, smsLink, callId as newCallId } from './logic.mjs';
+import { qrSvg, isOpen, hoursLabel, formatClock, youtubeEmbed, callId as newCallId } from './logic.mjs';
 import { openChannel, getMedia, createPeer, stopStream, postJson } from './call.mjs';
 
 const $ = (id) => document.getElementById(id);
@@ -14,13 +13,6 @@ function readKey() {
   } catch {
     return fromUrl || '';
   }
-}
-
-function qrSvg(text, cell = 6) {
-  const qr = qrcode(0, 'M');
-  qr.addData(text);
-  qr.make();
-  return qr.createSvgTag({ cellSize: cell, margin: 2, scalable: true });
 }
 
 function show(mode) {
@@ -49,7 +41,7 @@ function renderBrand() {
     if (brand.logo) el.innerHTML = `<img src="${brand.logo}" alt="${brand.name}">`;
     else el.textContent = brand.signature || brand.name;
   });
-  const menu = qrSvg(state.config.menuUrl);
+  const menu = qrSvg(state.qr.menu);
   document.querySelectorAll('[data-menu-qr]').forEach((el) => (el.innerHTML = menu));
   $('closed-message').textContent = state.config.closed.message;
   $('closed-hours').textContent = `Open daily ${hoursLabel(state.config.hours)}`;
@@ -186,8 +178,8 @@ function endCall(reason, detail = '') {
   event(reason === 'ended' && !call.connectedAt ? 'cancelled' : reason, { seconds, detail });
 
   if (reason === 'missed' || (reason === 'failed' && !call.connectedAt)) {
-    const link = smsLink(state.config.missedCall.textNumber, state.config.missedCall.textMessage);
-    $('sms-qr').innerHTML = link ? qrSvg(link) : qrSvg(state.config.menuUrl);
+    const link = state.qr.text;
+    $('sms-qr').innerHTML = qrSvg(link || state.qr.menu);
     $('missed-text').textContent = link
       ? "Scan to text us and we'll get right back to you."
       : 'Scan to visit our website.';
@@ -212,7 +204,9 @@ async function keepAwake() {
 }
 
 async function init() {
-  state.config = await fetch('/config.json', { cache: 'no-store' }).then((r) => r.json());
+  [state.config, state.qr] = await Promise.all(
+    ['/config.json', '/qr.json'].map((path) => fetch(path, { cache: 'no-store' }).then((r) => r.json())),
+  );
   state.key = readKey();
   renderBrand();
   try {
