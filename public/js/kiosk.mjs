@@ -31,20 +31,26 @@ function event(type, extra = {}) {
 
 // ---------- Home: slideshow when open, YouTube when closed ----------
 
+// Two-colour shout: "Order|Online!" -> orange line, green line.
+function shout(text) {
+  const [first, ...rest] = String(text).split('|');
+  return `<span class="o">${first}</span>${rest.length ? ` <span class="g">${rest.join(' ')}</span>` : ''}`;
+}
+
 function renderBrand() {
   const { brand } = state.config;
-  const root = document.documentElement.style;
-  root.setProperty('--bg', brand.colors.background);
-  root.setProperty('--text', brand.colors.text);
-  root.setProperty('--gold', brand.colors.gold);
-  document.querySelectorAll('[data-brand-signature]').forEach((el) => {
-    if (brand.logo) el.innerHTML = `<img src="${brand.logo}" alt="${brand.name}">`;
-    else el.textContent = brand.signature || brand.name;
+  document.querySelectorAll('[data-brand-logo]').forEach((el) => {
+    el.innerHTML = brand.logo ? `<img src="${brand.logo}" alt="${brand.name}">` : `<span class="wordmark">${brand.name}</span>`;
   });
+  document.querySelectorAll('[data-brand-name]').forEach((el) => (el.textContent = brand.name));
+  const words = (state.config.marquee || 'Scan for the menu!').toUpperCase();
+  document.querySelectorAll('[data-marquee]').forEach((el) => (el.innerHTML = `<span>${words}</span>`.repeat(8)));
+  const hours = hoursLabel(state.config.hours);
+  document.querySelectorAll('[data-hours-today]').forEach((el) => (el.textContent = `Open ${hours}`));
   const menu = qrSvg(state.qr.menu);
   document.querySelectorAll('[data-menu-qr]').forEach((el) => (el.innerHTML = menu));
   $('closed-message').textContent = state.config.closed.message;
-  $('closed-hours').textContent = `Open daily ${hoursLabel(state.config.hours)}`;
+  $('closed-hours').textContent = `Open daily ${hours}`;
 }
 
 function renderSlides() {
@@ -52,8 +58,8 @@ function renderSlides() {
   $('slides').innerHTML = state.config.slides
     .filter((s) => !s.needsCalls || state.session)
     .map(
-      (s, i) => `<article class="slide${i === 0 ? ' active' : ''}"${s.image ? ` style="background-image:url('${s.image}')"` : ''}>
-        <div class="slide-copy"><h1>${s.headline}</h1><p class="lead">${s.body}</p></div></article>`,
+      (s, i) => `<article class="slide${i === 0 ? ' active' : ''}${s.image ? ' has-image' : ''}"${s.image ? ` style="background-image:url('${s.image}')"` : ''}>
+        <h1 class="shout">${shout(s.headline)}</h1><p class="lead">${s.body}</p></article>`,
     )
     .join('');
 }
@@ -73,7 +79,7 @@ function setPlayer(on) {
     const opens = state.config.hours.default?.open;
     player.innerHTML = src
       ? `<iframe src="${src}" allow="autoplay; encrypted-media" title="Wings World TV"></iframe>`
-      : `<div class="closed-art"><div class="signature">${state.config.brand.signature}</div><p class="lead">See you at ${formatClock(opens)}</p></div>`;
+      : `<div class="closed-art"><h1 class="shout">${shout("We're|closed!")}</h1><p class="lead">See you at ${formatClock(opens)}</p></div>`;
   } else if (!on) player.innerHTML = '';
 }
 
@@ -187,7 +193,7 @@ function endCall(reason, detail = '') {
     return show('missed');
   }
   if (reason === 'cancelled') return goHome();
-  $('ended-title').textContent = reason === 'failed' ? 'The call dropped' : 'Thanks for calling';
+  $('ended-title').innerHTML = shout(reason === 'failed' ? 'The call|dropped' : 'Thanks|for calling!');
   $('ended-text').textContent = reason === 'failed' ? 'Tap to try again any time.' : 'Enjoy your wings.';
   show('ended');
   state.timers.idle = setTimeout(goHome, 6000);

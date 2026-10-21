@@ -1,13 +1,7 @@
 {
   "brand": {
     "name": "Wings World",
-    "signature": "Wings World",
-    "logo": "",
-    "colors": {
-      "background": "#0B0B0B",
-      "text": "#FFFFFF",
-      "gold": "#C9A227"
-    }
+    "logo": "/brand/logo-from-site.png"
   },
   "menuUrl": "https://www.wingsworldfood.com",
   "timeZone": "America/Chicago",
@@ -28,23 +22,24 @@
   },
   "slides": [
     {
-      "headline": "Fresh wings, made to order",
-      "body": "Scan the code to see the full menu.",
+      "headline": "Order|online!",
+      "body": "Scan the code with your phone camera to see the menu.",
       "image": ""
     },
     {
-      "headline": "Questions? Talk to us live",
-      "body": "Tap the screen to video call the Wings World team.",
+      "headline": "Talk to|us live!",
+      "body": "Tap the button to video call the Wings World team.",
       "image": "",
       "needsCalls": true
     },
     {
-      "headline": "Today's special",
-      "body": "Ask us about today's deal.",
+      "headline": "World|famous!",
+      "body": "Ask about Party Wings for your next event.",
       "image": ""
     }
   ],
   "slideSeconds": 8,
   "ringSeconds": 45,
-  "idleResetSeconds": 60
+  "idleResetSeconds": 60,
+  "marquee": "Scan for the menu!"
 }

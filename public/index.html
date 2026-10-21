@@ -3,45 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-  <meta name="theme-color" content="#0B0B0B">
+  <meta name="theme-color" content="#F8BD1D">
   <title>Wings World</title>
   <link rel="manifest" href="/kiosk.webmanifest">
   <link rel="icon" href="/icons/icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Poppins:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="/css/kiosk.css">
 </head>
 <body>
   <main id="app" data-mode="setup">
     <!-- First load on the tablet: needs one tap so sound, full screen and keep-awake are allowed. -->
-    <section class="screen" id="setup">
-      <div class="signature" data-brand-signature>Wings World</div>
+    <section class="screen yellow" id="setup">
+      <div data-brand-logo class="logo big"></div>
       <p class="lead" id="setup-status">Getting ready…</p>
-      <button class="button gold" id="start" disabled>Start kiosk</button>
+      <button class="pill solid" id="start" disabled>Start kiosk</button>
     </section>
 
-    <section class="screen" id="idle" aria-label="Welcome">
-      <div class="slides" id="slides"></div>
-      <div class="bar">
-        <div class="signature small" data-brand-signature>Wings World</div>
-        <button class="button gold" id="talk">Tap to talk to us</button>
-        <figure class="qr"><div data-menu-qr></div><figcaption>Scan for menu</figcaption></figure>
+    <section class="screen home" id="idle" aria-label="Welcome">
+      <header class="band">
+        <div data-brand-logo class="logo"></div>
+        <div class="wordmark" data-brand-name>Wings World</div>
+        <div class="hours" data-hours-today></div>
+      </header>
+      <div class="marquee" aria-hidden="true"><div class="marquee-track" data-marquee></div></div>
+      <div class="stage">
+        <div class="slides" id="slides"></div>
+        <aside class="side">
+          <figure class="qr-card"><div data-menu-qr></div><figcaption>Scan for menu</figcaption></figure>
+          <button class="pill" id="talk">Tap to talk to us</button>
+        </aside>
       </div>
     </section>
 
-    <section class="screen" id="confirm" aria-label="Start a video call">
-      <h1>Talk to the Wings World team?</h1>
-      <p class="lead">We'll start a video call with someone in the restaurant.</p>
+    <section class="screen yellow" id="confirm" aria-label="Start a video call">
+      <h1 class="shout"><span class="o">Talk</span> <span class="g">to us!</span></h1>
+      <p class="lead">We'll start a video call with someone at Wings World.</p>
       <div class="row">
-        <button class="button gold" id="call">Start video call</button>
-        <button class="button ghost" data-home>Not now</button>
+        <button class="pill solid" id="call">Start video call</button>
+        <button class="pill" data-home>Not now</button>
       </div>
     </section>
 
     <section class="screen" id="ringing" aria-label="Calling">
       <video id="preview" autoplay playsinline muted></video>
       <div class="overlay">
-        <h1>Calling Wings World…</h1>
+        <h1 class="shout"><span class="o">Calling</span> <span class="g">Wings World…</span></h1>
         <p class="lead" id="ring-status">Someone will be right with you.</p>
-        <button class="button ghost" id="cancel">Cancel</button>
+        <button class="pill light" id="cancel">Cancel</button>
       </div>
     </section>
 
@@ -50,32 +60,33 @@
       <video id="self" autoplay playsinline muted></video>
       <div class="incall-bar">
         <span id="incall-name">Wings World</span>
-        <button class="button end" id="hangup">End call</button>
+        <button class="pill end" id="hangup">End call</button>
       </div>
     </section>
 
-    <section class="screen" id="missed" aria-label="Missed call">
-      <h1>Sorry we missed you</h1>
+    <section class="screen yellow" id="missed" aria-label="Missed call">
+      <h1 class="shout"><span class="o">Sorry</span> <span class="g">we missed you!</span></h1>
       <p class="lead" id="missed-text">Scan to text us and we'll get right back to you.</p>
-      <figure class="qr large"><div id="sms-qr"></div><figcaption>Scan to text us</figcaption></figure>
-      <button class="button ghost" data-home>Done</button>
+      <figure class="qr-card large"><div id="sms-qr"></div><figcaption>Scan to text us</figcaption></figure>
+      <button class="pill" data-home>Done</button>
     </section>
 
-    <section class="screen" id="ended" aria-label="Call ended">
-      <h1 id="ended-title">Thanks for calling</h1>
+    <section class="screen yellow" id="ended" aria-label="Call ended">
+      <h1 class="shout" id="ended-title"><span class="o">Thanks</span> <span class="g">for calling!</span></h1>
       <p class="lead" id="ended-text">Enjoy your wings.</p>
     </section>
 
-    <section class="screen" id="closed" aria-label="Closed">
+    <section class="screen home" id="closed" aria-label="Closed">
+      <header class="band">
+        <div data-brand-logo class="logo"></div>
+        <div class="wordmark" data-brand-name>Wings World</div>
+        <div class="hours" id="closed-hours"></div>
+      </header>
       <div class="player" id="player"></div>
-      <div class="closed-bar">
-        <div class="signature small" data-brand-signature>Wings World</div>
-        <div>
-          <strong id="closed-message">We're closed right now</strong>
-          <span id="closed-hours"></span>
-        </div>
-        <figure class="qr"><div data-menu-qr></div><figcaption>Scan for menu</figcaption></figure>
-      </div>
+      <footer class="closed-bar">
+        <strong id="closed-message">We're closed right now</strong>
+        <figure class="qr-card small"><div data-menu-qr></div><figcaption>Scan for menu</figcaption></figure>
+      </footer>
     </section>
   </main>
   <script type="module" src="/js/kiosk.mjs"></script>
